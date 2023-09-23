@@ -3,10 +3,12 @@ game 'gta5'
 description 'Multiple leveling robberies for QBCore'
 version '1.0.0'
 client_scripts {
-    'client/*.lua'
+    'client/client.lua',
+    'client/vangelico.lua'
 }
 server_scripts {
-    'server/*.lua',
+    'server/server.lua',
+    'server/vangelico.lua',
     '@oxmysql/lib/MySQL.lua'
 }
 shared_script {

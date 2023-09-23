@@ -17,7 +17,8 @@ Locale.Error = {
     doors_cant_open = "The doors can't be opened, maybe you need to blow a fuse?",
     no_advanced_lockpicks = 'You have no advanced lockpicks on you!',
     couldnt_hack = "You couldn't hack the system. Try again!",
-    try_robbing_stores = "You don't have enough skill yet. Try robbing some stores!"
+    try_robbing_stores = "You don't have enough skill yet. Try robbing some stores!",
+    not_available = 'You cannot do this right now. Try later?'
 }
 Locale.Info = {
     robbing_keeper = 'Robbing Store Keeper...',
@@ -31,6 +32,7 @@ Locale.Info = {
     vangelico_doors_target_label = 'Open Doors',
     vangelico_desk_target_label = 'Hack Security',
     case_target_label = 'Break case',
-    smashing_case = 'Smashing Case'
+    smashing_case = 'Smashing Case',
+    robbery_starting = 'A robbery is starting! Check your map for information.'
 
 }
