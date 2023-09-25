@@ -9,7 +9,7 @@ Citizen.CreateThread(function()
     while true do
         local ped = PlayerPedId()
         local coords = GetEntityCoords(ped)
-        for k,v in pairs (Config.Stores.Locations) do
+        for k,v in pairs (Locations.Stores) do
             if GetDistanceBetweenCoords(coords, v.SafeTarget.Coords) < 30 then
                 near = v
                 local aiming, targetPed = GetEntityPlayerIsFreeAimingAt(PlayerId())
@@ -58,7 +58,7 @@ RegisterNetEvent('rv_robberies:client:RobSafe', function()
             exports[Config.TargetName]:RemoveZone('store-safe')
             LoadAnimDict("amb@prop_human_bum_bin@idle_b")
             TaskPlayAnim(PlayerPedId(), "amb@prop_human_bum_bin@idle_b", "idle_d", 4.0, 4.0, -1, 50, 0, false, false, false)
-            QBCore.Functions.Progressbar("robbing_keeper", Locale.Info.emptying_safe, math.random(15000, 30000), false, true, {
+            QBCore.Functions.Progressbar("emptying_safe", Locale.Info.emptying_safe, math.random(15000, 30000), false, true, {
                 disableMovement = true,
                 disableCarMovement = true,
                 disableMouse = false,
@@ -109,7 +109,7 @@ RegisterNetEvent('rv_robberies:client:RobRegister', function()
     end)
 end)
 
-RegisterNetEvent('rv_robberies:client:ReceiveBlip', function()
+RegisterNetEvent('rv_robberies:client:ReceiveBlip', function(position)
     blipRobbery = AddBlipForCoord(position.x, position.y, position.z)
     SetBlipSprite(blipRobbery , 161)
     SetBlipScale(blipRobbery , 2.0)
@@ -153,6 +153,7 @@ function RobShopkeeper(targetPed)
     if not allowed then
         return
     end
+    TriggerServerEvent('rv_robberies:server:ContactPolice', near.Name, near.SafeTarget.Coords)
     TriggerServerEvent('rv_robberies:server:SetStoreRobbed', near)
     LoadAnimDict('random@arrests')
     TaskPlayAnim(targetPed, "random@arrests", "idle_2_hands_up", 8.0, 1.0, -1, 2, 0, 0, 0, 0 )
@@ -200,3 +201,26 @@ function contains(table, val)
     end
     return false
  end
+
+ function trim(s)
+    return s:match"^%s*(.*)":match"(.-)%s*$"
+ end
+ 
+ function GunInHand() 
+    return GetSelectedPedWeapon(PlayerPedId()) ~= -1569615261
+ end
+
+ function DrawText3Ds(coords, text)
+	SetTextScale(0.35, 0.35)
+    SetTextFont(4)
+    SetTextProportional(1)
+    SetTextColour(255, 255, 255, 215)
+    SetTextEntry("STRING")
+    SetTextCentre(true)
+    AddTextComponentString(text)
+    SetDrawOrigin(coords, 0)
+    DrawText(0.0, 0.0)
+    local factor = (string.len(text)) / 370
+    DrawRect(0.0, 0.0+0.0125, 0.017+ factor, 0.03, 0, 0, 0, 75)
+    ClearDrawOrigin()
+end

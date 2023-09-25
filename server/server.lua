@@ -5,6 +5,21 @@ VangelicoBlown = 0
 VangelicoDoor = 0
 PoliceAmount = {}
 
+Citizen.CreateThread(function()
+    while true do
+        local NewPolice = {}
+        for _, v in pairs(QBCore.Functions.GetQBPlayers()) do
+            for k,v2 in pairs(Config.PoliceJobNames) do
+                if v.PlayerData.job.name == v2 and v.PlayerData.job.onduty then
+                    table.insert(NewPolice, v)
+                end
+            end
+        end
+        PoliceAmount = NewPolice
+        Citizen.Wait(10000)
+    end
+end)
+
 RegisterNetEvent('rv_robberies:server:SetStoreRobbed', function(store)
     table.insert(RobbedStores, { name = store.Name, til = os.time() + (Config.Stores.RobbingCooldown * 60) })
 end)
@@ -13,6 +28,11 @@ QBCore.Functions.CreateCallback('rv_robberies:server:CheckStoreStatus', function
     local src = source
     local contains = contains(RobbedStores, store.Name)
     if contains and contains.til > os.time() then
+        TriggerClientEvent('QBCore:Notify', src, Locale.Error.cant_be_robbed, 'error')
+        cb(false)
+        return
+    end
+    if #PoliceAmount < Config.Stores.RequiredPolice then
         TriggerClientEvent('QBCore:Notify', src, Locale.Error.cant_be_robbed, 'error')
         cb(false)
         return
@@ -48,16 +68,8 @@ end)
 
 RegisterNetEvent('rv_robberies:server:ContactPolice', function(msg)
     local src = source
-    local police = {}
-    for _, v in pairs(QBCore.Functions.GetQBPlayers()) do
-        for k,v2 in pairs(Config.PoliceJobNames) do
-            if v.PlayerData.job.name == v2 and v.PlayerData.job.onduty then
-                table.insert(police, v)
-            end
-        end
-    end
     if not Config.UsingPsDispatch then
-        for k,v in pairs(police) do
+        for k,v in pairs(PoliceAmount) do
             TriggerClientEvent('rv_robberies:client:ReceiveBlip', v.PlayerData.source)
             TriggerClientEvent('QBCore:Notify', v.PlayerData.SoundVehicleHornThisFrame, Locale.Info.robbery_starting, 'error')
         end
@@ -86,4 +98,9 @@ QBCore.Functions.CreateCallback('rv_robberies:server:GetCopCount', function(sour
     end
     PoliceAmount[source] = amount
     cb(amount)
+end)
+
+RegisterNetEvent('rv_robberies:server:DeleteObject', function(netId)
+    local object = NetworkGetEntityFromNetworkId(netId)
+	DeleteEntity(object)
 end)

@@ -49,6 +49,10 @@ RegisterNetEvent('rv_robberies:client:BlowVangelicoFusebox', function()
         QBCore.Functions.Notify(Locale.Error.try_robbing_stores, 'error', 5000)
         return
     end
+    if blown == 5 then
+        QBCore.Functions.Notify(Locale.Error.cant_be_robbed, 'error', 5000)
+        return
+    end
     local p = promise.new()
     local allowed
     QBCore.Functions.TriggerCallback('rv_robberies:server:IsVangelicoDoorOpen', function(result)
@@ -58,6 +62,7 @@ RegisterNetEvent('rv_robberies:client:BlowVangelicoFusebox', function()
     if allowed then
         return
     end
+    TriggerServerEvent('rv_robberies:server:ContactPolice', 'Vangelico Robbery', Config.Vangelico.DeskTarget.Coords)
     LoadAnimDict("amb@prop_human_bum_bin@idle_b")
     TaskPlayAnim(PlayerPedId(), "amb@prop_human_bum_bin@idle_b", "idle_d", 4.0, 4.0, -1, 50, 0, false, false, false)
     QBCore.Functions.Progressbar("blowing_fusebox", Locale.Info.blowing_fusebox, math.random(15000, 30000), false, true, {

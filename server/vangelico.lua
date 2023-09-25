@@ -16,6 +16,10 @@ QBCore.Functions.CreateCallback('rv_robberies:server:IsVangelicoFuseboxBlown', f
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local item = Player.Functions.GetItemByName(Config.ThermiteItem)
+    if #PoliceAmount < Config.Stores.RequiredPolice then
+        cb(5)
+        return
+    end
     if VangelicoBlown > os.time() then
         cb(1)
         return
