@@ -132,8 +132,6 @@ RegisterNetEvent('rv_robberies:client:PacificSecurity', function(location)
                                             function()
                                                 QBCore.Functions.Notify(Locale.Error.failed_systems, 'error', 5000)
                                             end)
-                                            
-                                            
                                         end,
                                         icon = "fas fa-computer",
                                         label = Locale.Info.crack_systems
@@ -228,7 +226,7 @@ function AddLaptopTarget(location)
 end
 
 function PacificLaptopAnimation(location)
-    TriggerServerEvent('rv_robberies:server:ContactPolice', location.Name, location.Employee.Coords)
+    TriggerServerEvent('rv_robberies:server:ContactPolice', location.Name, location.Keypad.Coords)
     LocalPlayer.state:set("inv_busy", true, true)
     local animDict = "anim@heists@ornate_bank@hack"
     local loc = location.Keypad.AnimCoords

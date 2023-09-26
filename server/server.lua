@@ -22,17 +22,22 @@ end)
 
 RegisterNetEvent('rv_robberies:server:SetStoreRobbed', function(store)
     table.insert(RobbedStores, { name = store.Name, til = os.time() + (Config.Stores.RobbingCooldown * 60) })
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    Player.Functions.SetMetaData("storesrobbed", Player.PlayerData.metadata['storesrobbedd'] + 1)
 end)
 
 QBCore.Functions.CreateCallback('rv_robberies:server:CheckStoreStatus', function(source, cb, store)
     local src = source
     local contains = contains(RobbedStores, store.Name)
-    if contains and contains.til > os.time() then
-        TriggerClientEvent('QBCore:Notify', src, Locale.Error.cant_be_robbed, 'error')
-        cb(false)
-        return
+    for k,v in pairs(RobbedStores) do
+        if v.Name == store.Name and v.til > os.time() then
+            TriggerClientEvent('QBCore:Notify', src, Locale.Error.cant_be_robbed, 'error')
+            cb(false)
+            return
+        end
     end
-    if #PoliceAmount < Config.Stores.RequiredPolice then
+    if #PoliceAmount < Config.Stores.RequiredCops then
         TriggerClientEvent('QBCore:Notify', src, Locale.Error.cant_be_robbed, 'error')
         cb(false)
         return
@@ -66,16 +71,20 @@ RegisterNetEvent('rv_robberies:server:EmptiedRegister', function()
     Player.Functions.AddMoney('cash', Config.Stores.RegisterReward)
 end)
 
-RegisterNetEvent('rv_robberies:server:ContactPolice', function(msg)
+RegisterNetEvent('rv_robberies:server:ContactPolice', function(msg, coords)
     local src = source
-    if not Config.UsingPsDispatch then
-        for k,v in pairs(PoliceAmount) do
-            TriggerClientEvent('rv_robberies:client:ReceiveBlip', v.PlayerData.source)
-            TriggerClientEvent('QBCore:Notify', v.PlayerData.SoundVehicleHornThisFrame, Locale.Info.robbery_starting, 'error')
+    local Ps = false
+    for k,v in pairs(PoliceAmount) do
+        if not Config.UsingPsDispatch then
+            TriggerClientEvent('rv_robberies:client:ReceiveBlip', v.PlayerData.source, coords)
+            TriggerClientEvent('QBCore:Notify', v.PlayerData.source, Locale.Info.robbery_starting, 'error')
+        else
+            if not Ps then
+                Ps = true
+                TriggerClientEvent('rv_robberies:client:Dispatch', v.PlayerData.source, msg, coords)
+            end
         end
-        return
     end
-    TriggerClientEvent('rv_robberies:server:Dispatch', src, msg)
 end)
 
 function contains(table, val)

@@ -175,7 +175,7 @@ RegisterNetEvent('rv_robberies:client:OpenVangelicoDoors', function()
         p:resolve(result)
     end)
     cops = Citizen.Await(p)
-    if cops < Config.Vangelico.RequiredCops then
+    if cops < Config.Vangelico.RequiredPolice then
         QBCore.Functions.Notify(Locale.Error.not_available, 'error', 5000)
         return
     end

@@ -1,4 +1,54 @@
 Locations = {}
+Locations.Vault = {
+    {
+        Name = 'Pacific Standard Vault',
+        FuseBoxes = {
+            { Coords = vector3(765.86, 1274.24, 360.3), Heading = 108.86, Name = '#1'},
+            { Coords = vector3(760.44, 1280.42, 360.3), Heading = 183.63, Name = '#2'},
+            { Coords = vector3(751.03, 1273.66, 360.3), Heading = 285.86, Name = '#3'},
+        },
+        Keypad = {
+            Coords = vector3(257.51, 227.84, 101.68),
+            Heading = 340,
+            AnimCoords = vector3(256.31, 226.75, 101.88)
+        },
+        VaultDoor = {
+            Model = -1520917551,
+            Coords = vector3(258.29, 240.03, 102.24),
+            Heading = {
+                Closed = 160,
+                Open = 35
+            }
+        },
+        Doors = {
+            { Coords = vector3(256.34, 240.18, 101.7), Heading = 345, Id = 'Main'},
+            { Coords = vector3(255.74, 245.16, 101.69), Heading = 67, Id = 'One', Model = -1735710},
+            { Coords = vector3(257.75, 250.75, 101.69), Heading = 67, Id = 'Two', Model = -1735710},
+            { Coords = vector3(259.84, 256.47, 101.69), Heading = 67, Id = 'Three', Model = -1735710},
+            { Coords = vector3(264.25, 254.68, 101.69), Heading = 250, Id = 'Four', Model = -1735710},
+            { Coords = vector3(262.28, 249.25, 101.69), Heading = 250, Id = 'Five', Model = -1735710},
+            { Coords = vector3(260.27, 243.72, 101.69), Heading = 250, Id = 'Six', Model = -1735710},
+        },
+        Lockers = {
+            { Coords = vector3(257.11, 233.43, 101.68), Heading = 350 },
+            { Coords = vector3(259.42, 232.6, 101.68), Heading = 350 },
+            { Coords = vector3(261.48, 235.2, 101.68), Heading = 247 },
+            { Coords = vector3(258.98, 234.34, 101.68), Heading = 160 },
+        },
+        Computer = {
+            Coords = vector3(251.58, 236.03, 101.68),
+            Heading = 240
+        },
+        Trollys = {
+            vector4(263.25, 242.28, 101.69, 318.48),
+            vector4(265.42, 247.88, 101.69, 45.33),
+            vector4(267.18, 255.04, 101.69, 68.32),
+            vector4(256.91, 257.23, 101.69, 66.28),
+            vector4(254.95, 252.32, 101.69, 131.08),
+            vector4(253.04, 246.4, 101.69, 300.91)
+        }
+    }
+}
 Locations.Pacific = {
     {
         Name = "Pacific Standard Bank",

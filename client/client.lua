@@ -4,6 +4,7 @@ near = nil
 StoreKeeperRobbed = false
 VangelicoRobbed = false
 smashing = false
+Started = false
 
 Citizen.CreateThread(function()
     while true do
@@ -14,7 +15,10 @@ Citizen.CreateThread(function()
                 near = v
                 local aiming, targetPed = GetEntityPlayerIsFreeAimingAt(PlayerId())
                 if aiming and contains(Config.Stores.ShopKeeperPedHashes, GetEntityModel(targetPed)) and GetDistanceBetweenCoords(coords, GetEntityCoords(targetPed)) < 3 then
-                    RobShopkeeper(targetPed)
+                    if not Started then
+                        Started = true
+                        RobShopkeeper(targetPed)
+                    end
                 end
             end
         end
@@ -101,6 +105,7 @@ RegisterNetEvent('rv_robberies:client:RobRegister', function()
         disableCombat = true
     }, {
     }, {}, {}, function() -- Done
+        Started = false
         QBCore.Functions.Notify(Locale.Success.emptied_register, 'success', 5000)
         TriggerServerEvent('rv_robberies:server:EmptiedRegister')
         LoadAnimDict("amb@prop_human_bum_bin@idle_b")
@@ -119,21 +124,22 @@ RegisterNetEvent('rv_robberies:client:ReceiveBlip', function(position)
     RemoveBlip(blipRobbery)
 end)
 
-RegisterNetEvent('rv_robberies:client:Dispatch', function(msg)
+RegisterNetEvent('rv_robberies:client:Dispatch', function(msg, position)
     exports["ps-dispatch"]:CustomAlert({
-        coords = vector3(0.0, 0.0, 0.0),
-        message = "Robbery Taking Place!",
-        dispatchCode = "10-4",
+        coords = position,
+        message = msg,
+        dispatchCode = "10-90",
         description = "Check your map for info.",
         radius = 0,
         sprite = 161,
         color = 3,
-        scale = 2.0,
+        scale = 1.5,
         length = 3,
     })
 end)
 
 function RobShopkeeper(targetPed)
+    TriggerServerEvent('rv_robberies:server:ContactPolice', near.Name, near.SafeTarget.Coords)
     local p = promise.new()
     local cops
     QBCore.Functions.TriggerCallback('rv_robberies:server:GetCopCount', function(result)
@@ -153,7 +159,6 @@ function RobShopkeeper(targetPed)
     if not allowed then
         return
     end
-    TriggerServerEvent('rv_robberies:server:ContactPolice', near.Name, near.SafeTarget.Coords)
     TriggerServerEvent('rv_robberies:server:SetStoreRobbed', near)
     LoadAnimDict('random@arrests')
     TaskPlayAnim(targetPed, "random@arrests", "idle_2_hands_up", 8.0, 1.0, -1, 2, 0, 0, 0, 0 )

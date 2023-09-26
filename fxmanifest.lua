@@ -8,6 +8,7 @@ client_scripts {
     'client/vangelico.lua',
     'client/paleto.lua',
     'client/pacific.lua',
+    'client/vault.lua',
 }
 server_scripts {
     'server/server.lua',
@@ -15,6 +16,7 @@ server_scripts {
     'server/vangelico.lua',
     'server/paleto.lua',
     'server/pacific.lua',
+    'server/vault.lua',
     '@oxmysql/lib/MySQL.lua'
 }
 shared_script {

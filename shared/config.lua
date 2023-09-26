@@ -49,12 +49,29 @@ Config.FlashdriveTraders = {
         }
     },
 }
+Config.Vault = {
+    RequiredPacificRobberies = 5,
+    RequiredPolice = 5,
+    LaptopItem = 'laptop_gold',
+    USBItem = 'vault_flashdrive',
+    KeycardItem = 'vault_keycard',
+    SafeRewards = {
+        Cash = {
+            amountMin = 5000, amountMax = 9000
+        },
+        Items = {
+            { item = 'goldbar', amountMin = 1, amountMax = 3}
+        }
+    },
+    TrollyRewards = {
+        Items = {
+            { item = 'markedbills', amountMin = 3, amountMax = 8 }
+        }
+    },
+}
 Config.Pacific = {
     RequiredPaletoRobberies = 3,
     RequiredPolice = 5,
-    Kidnapping = {
-        Coords = vector3(-116.89, -2679.26, 6.01)
-    },
     LaptopItem = 'laptop_red',
     KeysItem = 'pacific_keys',
     KeycardItem = 'pacific_keycard',

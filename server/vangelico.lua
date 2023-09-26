@@ -16,7 +16,7 @@ QBCore.Functions.CreateCallback('rv_robberies:server:IsVangelicoFuseboxBlown', f
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local item = Player.Functions.GetItemByName(Config.ThermiteItem)
-    if #PoliceAmount < Config.Stores.RequiredPolice then
+    if #PoliceAmount < Config.Vangelico.RequiredPolice then
         cb(5)
         return
     end
@@ -34,6 +34,9 @@ QBCore.Functions.CreateCallback('rv_robberies:server:IsVangelicoFuseboxBlown', f
     end
     Player.Functions.RemoveItem(Config.ThermiteItem, 1)
     TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[Config.ThermiteItem], 'remove')
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    Player.Functions.SetMetaData("storesrobbed", Player.PlayerData.metadata['storesrobbedd'] + 1)
     cb(3)
 end)
 

@@ -68,7 +68,7 @@ QBCore.Functions.CreateCallback('rv_robberies:server:HasDrill', function(source,
     cb(true)
 end)
 
-QBCore.Functions.CreateCallback('rv_robberies:server:CanAffordLaptop', function(source, cb)
+QBCore.Functions.CreateCallback('rv_robberies:server:CanAffordLaptop', function(source, cb, type)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     if type == 'green' then
@@ -196,6 +196,9 @@ end)
 RegisterNetEvent('rv_robberies:server:SetBankRobbed', function(bank)
     FleecaRobberyCooldown = os.time() + (Config.Fleecas.RobbingCooldown * 60)
     table.insert(RobbedBanks, bank)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    Player.Functions.SetMetaData("storesrobbed", Player.PlayerData.metadata['storesrobbedd'] + 1)
 end)
 
 RegisterNetEvent('rv_robberies:server:KidnapEmployeeCooldown', function()
