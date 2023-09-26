@@ -63,6 +63,10 @@ RegisterNetEvent('rv_robberies:server:EmptiedSafe', function()
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     Player.Functions.AddMoney('cash', Config.Stores.SafeReward)
+    if math.random(1, 100) < 25 then
+        Player.Functions.AddItem(Config.Stores.RareSafeItem, 1)
+        TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[Config.Stores.RareSafeItem], 'add')
+    end
 end)
 
 RegisterNetEvent('rv_robberies:server:EmptiedRegister', function()

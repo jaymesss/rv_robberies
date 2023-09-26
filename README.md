@@ -1,5 +1,5 @@
 
-In your qb-core/server/player.lua please add the following:
+1. In your qb-core/server/player.lua please add the following:
 
 PlayerData.metadata['storesrobbed'] = PlayerData.metadata['storesrobbed'] or 0
 PlayerData.metadata['vangelicosrobbed'] = PlayerData.metadata['vangelicosrobbed'] or 0
@@ -8,7 +8,7 @@ PlayerData.metadata['paletosrobbed'] = PlayerData.metadata['paletosrobbed'] or 0
 PlayerData.metadata['pacificsrobbed'] = PlayerData.metadata['pacificsrobbed'] or 0
 PlayerData.metadata['vaultsrobbed'] = PlayerData.metadata['vaultsrobbed'] or 0
 
-In your qb-core/shared/items.lua please add the following:
+2. In your qb-core/shared/items.lua please add the following:
 Make sure to move the files in /images/ to your qb-inventory images.
 
 
@@ -23,3 +23,5 @@ Make sure to move the files in /images/ to your qb-inventory images.
 ['pacific_keys'] = {['name'] = 'pacific_keys', ['label'] = 'Pacific Keys', ['weight'] = 1000, ['type'] = 'item', ['image'] = 'pacific_keys.png', ['unique'] = false, ['useable'] = false, ['shouldClose'] = true, ['combinable'] = nil, ['description'] = 'Who did you steal this from?!'},
 ['flashdrive'] = {['name'] = 'flashdrive', ['label'] = 'Flashdrive', ['weight'] = 1000, ['type'] = 'item', ['image'] = 'flashdrive.png', ['unique'] = false, ['useable'] = false, ['shouldClose'] = true, ['combinable'] = nil, ['description'] = 'Is this the right way?'},
 ['vault_flashdrive'] = {['name'] = 'vault_flashdrive', ['label'] = 'Vault USB', ['weight'] = 1000, ['type'] = 'item', ['image'] = 'vault_flashdrive.png', ['unique'] = false, ['useable'] = false, ['shouldClose'] = true, ['combinable'] = nil, ['description'] = 'Is this the right way?'},
+
+3. Add the doorlocks from the /doorlocks/ folder to your qb-doorlocks/configs directory

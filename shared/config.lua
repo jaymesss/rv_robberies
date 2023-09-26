@@ -164,6 +164,7 @@ Config.Vangelico = {
 Config.Stores = {
     SafeReward = math.random(2500, 5000),
     RegisterReward = math.random(150, 500),
+    RareSafeItem = 'vpn',
     ShopKeeperPedHashes = {416176080}, -- We recommend usnig the default qb-shops ped type mp_m_shopkeep_01
     RobbingCooldown = 30, -- Minutes until that specific store is robbable again
     RequiredCops = 2,
