@@ -3,6 +3,7 @@ QBCore = exports[Config.CoreName]:GetCoreObject()
 RobbedStores = {}
 VangelicoBlown = 0
 VangelicoDoor = 0
+StoreCooldown = 0
 PoliceAmount = {}
 
 Citizen.CreateThread(function()
@@ -21,7 +22,7 @@ Citizen.CreateThread(function()
 end)
 
 RegisterNetEvent('rv_robberies:server:SetStoreRobbed', function(store)
-    table.insert(RobbedStores, { name = store.Name, til = os.time() + (Config.Stores.RobbingCooldown * 60) })
+    StoreCooldown =  os.time() + (Config.Stores.RobbingCooldown * 60)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     Player.Functions.SetMetaData("storesrobbed", Player.PlayerData.metadata['storesrobbed'] + 1)
@@ -30,12 +31,10 @@ end)
 QBCore.Functions.CreateCallback('rv_robberies:server:CheckStoreStatus', function(source, cb, store)
     local src = source
     local contains = contains(RobbedStores, store.Name)
-    for k,v in pairs(RobbedStores) do
-        if v.Name == store.Name and v.til > os.time() then
-            TriggerClientEvent('QBCore:Notify', src, Locale.Error.cant_be_robbed, 'error')
-            cb(false)
-            return
-        end
+    if StoreCooldown > os.time() then
+        TriggerClientEvent('QBCore:Notify', src, Locale.Error.cant_be_robbed, 'error')
+        cb(false)
+        return
     end
     if #PoliceAmount < Config.Stores.RequiredCops then
         TriggerClientEvent('QBCore:Notify', src, Locale.Error.cant_be_robbed, 'error')

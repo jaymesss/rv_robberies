@@ -166,6 +166,6 @@ Config.Stores = {
     RegisterReward = math.random(150, 500),
     RareSafeItem = 'vpn',
     ShopKeeperPedHashes = {416176080}, -- We recommend usnig the default qb-shops ped type mp_m_shopkeep_01
-    RobbingCooldown = 30, -- Minutes until that specific store is robbable again
+    RobbingCooldown = 30, -- Minutes until a store is robbable again
     RequiredCops = 2,
 }

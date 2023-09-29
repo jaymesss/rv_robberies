@@ -109,6 +109,7 @@ RegisterNetEvent('rv_robberies:client:RobRegister', function()
         QBCore.Functions.Notify(Locale.Success.emptied_register, 'success', 5000)
         TriggerServerEvent('rv_robberies:server:EmptiedRegister')
         LoadAnimDict("amb@prop_human_bum_bin@idle_b")
+        Started = false
         TaskPlayAnim(PlayerPedId(), "amb@prop_human_bum_bin@idle_b", "exit", 4.0, 4.0, -1, 50, 0, false, false, false)
     end, function() -- Cancel
     end)
@@ -156,7 +157,6 @@ function RobShopkeeper(targetPed)
     end, near)
     allowed = Citizen.Await(p)
     if not allowed then
-        Started = false
         return
     end
     TriggerServerEvent('rv_robberies:server:ContactPolice', near.Name, near.SafeTarget.Coords)
