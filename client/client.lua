@@ -139,7 +139,6 @@ RegisterNetEvent('rv_robberies:client:Dispatch', function(msg, position)
 end)
 
 function RobShopkeeper(targetPed)
-    TriggerServerEvent('rv_robberies:server:ContactPolice', near.Name, near.SafeTarget.Coords)
     local p = promise.new()
     local cops
     QBCore.Functions.TriggerCallback('rv_robberies:server:GetCopCount', function(result)
@@ -157,8 +156,10 @@ function RobShopkeeper(targetPed)
     end, near)
     allowed = Citizen.Await(p)
     if not allowed then
+        Started = false
         return
     end
+    TriggerServerEvent('rv_robberies:server:ContactPolice', near.Name, near.SafeTarget.Coords)
     TriggerServerEvent('rv_robberies:server:SetStoreRobbed', near)
     LoadAnimDict('random@arrests')
     TaskPlayAnim(targetPed, "random@arrests", "idle_2_hands_up", 8.0, 1.0, -1, 2, 0, 0, 0, 0 )
@@ -170,6 +171,7 @@ function RobShopkeeper(targetPed)
     }, {
     }, {}, {}, function() -- Done
         LoadAnimDict("amb@prop_human_bum_bin@idle_b")
+        Started = false
         TaskPlayAnim(targetPed, "amb@prop_human_bum_bin@idle_b", "exit", 4.0, 4.0, -1, 50, 0, false, false, false)
         QBCore.Functions.Notify(Locale.Success.head_to_the_safe, 'success', 5000)
         exports[Config.TargetName]:AddBoxZone('store-safe', near.SafeTarget.Coords, 0.8, 1.2, {

@@ -24,7 +24,7 @@ RegisterNetEvent('rv_robberies:server:SetStoreRobbed', function(store)
     table.insert(RobbedStores, { name = store.Name, til = os.time() + (Config.Stores.RobbingCooldown * 60) })
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    Player.Functions.SetMetaData("storesrobbed", Player.PlayerData.metadata['storesrobbedd'] + 1)
+    Player.Functions.SetMetaData("storesrobbed", Player.PlayerData.metadata['storesrobbed'] + 1)
 end)
 
 QBCore.Functions.CreateCallback('rv_robberies:server:CheckStoreStatus', function(source, cb, store)
