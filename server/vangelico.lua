@@ -36,7 +36,7 @@ QBCore.Functions.CreateCallback('rv_robberies:server:IsVangelicoFuseboxBlown', f
     TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[Config.ThermiteItem], 'remove')
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    Player.Functions.SetMetaData("storesrobbed", Player.PlayerData.metadata['storesrobbedd'] + 1)
+    Player.Functions.SetMetaData("vangelicosrobbed", Player.PlayerData.metadata['vangelicosrobbed'] + 1)
     cb(3)
 end)
 

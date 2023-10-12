@@ -81,7 +81,7 @@ RegisterNetEvent('rv_robberies:client:BlowVangelicoFusebox', function()
             end
             TriggerServerEvent('rv_robberies:server:VangelicoBlown')
             QBCore.Functions.Notify(Locale.Success.fusebox_blown, 'success', 5000)
-            exports[Config.TargetName]:AddBoxZone('vangelico-desk', Config.Vangelico.DeskTarget.Coords, 0.8, 1.2, {
+            TriggerServerEvent('rv_robberies:server:AddGlobalTarget', 'vangelico-desk', Config.Vangelico.DeskTarget.Coords, 0.8, 1.2, {
                 name = "vangelico-desk",
                 heading = Config.Vangelico.DeskTarget.Heading,
                 debugPoly = false
@@ -103,10 +103,10 @@ end)
 RegisterNetEvent('rv_robberies:client:HackVangelicoSecurity', function()
     exports["memorygame"]:thermiteminigame(10, 3, 3, 10,
     function()
-        exports[Config.TargetName]:RemoveZone('vangelico-desk')
+        TriggerServerEvent('rv_robberies:server:RemoveGlobalTarget', 'vangelico-desk')
         QBCore.Functions.Notify(Locale.Success.vangelico_hack_success, 'success', 5000)
         for k,v in pairs(Config.Vangelico.CaseZones) do
-            exports[Config.TargetName]:AddBoxZone('vangelico-case-' .. v.x .. '-' .. v.y .. '-' .. v.z, v, 1, 1, {
+            TriggerServerEvent('rv_robberies:server:AddGlobalTarget', 'vangelico-case-' .. v.x .. '-' .. v.y .. '-' .. v.z, v, 1, 1, {
                 name = 'vangelico-case-' .. v.x .. '-' .. v.y .. '-' .. v.z,
                 heading = 40,
                 debugPoly = false
@@ -122,7 +122,7 @@ RegisterNetEvent('rv_robberies:client:HackVangelicoSecurity', function()
                             smashing = true
                             local animDict = "missheist_jewel"
                             local animName = "smash_case"
-                            exports[Config.TargetName]:RemoveZone('vangelico-case-' .. v.x .. '-' .. v.y .. '-' .. v.z)
+                            TriggerServerEvent('rv_robberies:server:RemoveGlobalTarget', 'vangelico-case-' .. v.x .. '-' .. v.y .. '-' .. v.z)
                             QBCore.Functions.Progressbar("smash_case", Locale.Info.smashing_case, 10000, false, true, {
                                 disableMovement = true,
                                 disableCarMovement = true,

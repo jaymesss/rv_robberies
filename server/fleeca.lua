@@ -198,7 +198,7 @@ RegisterNetEvent('rv_robberies:server:SetBankRobbed', function(bank)
     table.insert(RobbedBanks, bank)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    Player.Functions.SetMetaData("storesrobbed", Player.PlayerData.metadata['storesrobbedd'] + 1)
+    Player.Functions.SetMetaData("fleecasrobbed", Player.PlayerData.metadata['fleecasrobbed'] + 1)
 end)
 
 RegisterNetEvent('rv_robberies:server:KidnapEmployeeCooldown', function()

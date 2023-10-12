@@ -84,10 +84,18 @@ RegisterNetEvent('rv_robberies:server:ContactPolice', function(msg, coords)
         else
             if not Ps then
                 Ps = true
-                TriggerClientEvent('rv_robberies:client:Dispatch', v.PlayerData.source, msg, coords)
+                TriggerClientEvent('rv_robberies:client:Dispatch', src, msg, coords)
             end
         end
     end
+end)
+
+RegisterNetEvent('rv_robberies:server:AddGlobalTarget', function(name, coords, sizeX, sizeY, data, options)
+    TriggerClientEvent('rv_robberies:client:AddGlobalTarget', -1, name, coords, sizeX, sizeY, data, options)
+end)
+
+RegisterNetEvent('rv_robberies:server:RemoveGlobalTarget', function(target)
+    TriggerClientEvent('rv_robberies:client:RemoveGlobalTarget', -1, target)
 end)
 
 function contains(table, val)

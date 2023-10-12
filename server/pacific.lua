@@ -10,7 +10,7 @@ QBCore.Functions.CreateCallback('rv_robberies:server:HasPacificSkill', function(
     end
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    Player.Functions.SetMetaData("storesrobbed", Player.PlayerData.metadata['storesrobbedd'] + 1)
+    Player.Functions.SetMetaData("pacificsrobbed", Player.PlayerData.metadata['pacificsrobbed'] + 1)
     cb(true)
 end)
 

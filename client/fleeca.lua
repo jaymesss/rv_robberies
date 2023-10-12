@@ -46,7 +46,7 @@ Citizen.CreateThread(function()
         FreezeEntityPosition(ped, true)
         SetEntityInvincible(ped, true)
         SetBlockingOfNonTemporaryEvents(ped, true)
-        exports[Config.TargetName]:AddBoxZone('fleeca-employee' .. v.Name, v.Employee.Coords, 1.5, 1.6, {
+        TriggerServerEvent('rv_robberies:server:AddGlobalTarget','fleeca-employee' .. v.Name, v.Employee.Coords, 1.5, 1.6, {
             name = "fleeca-employee-" .. v.Name,
             heading = v.Employee.Heading,
             debugPoly = false
@@ -63,7 +63,7 @@ Citizen.CreateThread(function()
                 }
             }
         })
-        exports[Config.TargetName]:AddBoxZone('fleeca-keypad' .. trim(v.Name), v.Keypad.Coords, 1.5, 1.6, {
+        TriggerServerEvent('rv_robberies:server:AddGlobalTarget','fleeca-keypad' .. trim(v.Name), v.Keypad.Coords, 1.5, 1.6, {
             name = "fleeca-keypad-" .. trim(v.Name),
             heading = v.Keypad.Heading,
             debugPoly = false
@@ -472,7 +472,7 @@ function UnlockDoor(location)
     FreezeEntityPosition(door, true)
     CreateTrollys(location)
     for k,v in pairs(location.Trollys) do
-        exports[Config.TargetName]:AddBoxZone('fleeca-trolly' .. v.x, v, 0.8, 1.0, {
+        TriggerServerEvent('rv_robberies:server:AddGlobalTarget', 'fleeca-trolly' .. v.x, v, 0.8, 1.0, {
             name = "fleeca-trolly-" .. v.x,
             heading = v.w,
             debugPoly = false
@@ -481,7 +481,7 @@ function UnlockDoor(location)
                 {
                     type = "client",
                     action = function()
-                        exports[Config.TargetName]:RemoveZone('fleeca-trolly' .. v.x)
+                        TriggerServerEvent('rv_robberies:server:RemoveGlobalTarget', 'fleeca-trolly' .. v.x)
                         local ped = PlayerPedId()
                         QBCore.Functions.Progressbar("looting_trolly", Locale.Info.looting_trolly, 40000, false, true, {
                             disableMovement = true,
@@ -545,7 +545,7 @@ function UnlockDoor(location)
         })
     end
     for k,v in pairs(location.Safes) do
-        exports[Config.TargetName]:AddBoxZone('fleeca-safe' .. v.Coords.x, v.Coords, 0.8, 1.0, {
+        TriggerServerEvent('rv_robberies:server:AddGlobalTarget','fleeca-safe' .. v.Coords.x, v.Coords, 0.8, 1.0, {
             name = "fleeca-safe-" .. v.Coords.x,
             heading = v.Heading,
             debugPoly = false
@@ -598,7 +598,7 @@ function UnlockDoor(location)
                                     disableCombat = true
                                 }, {
                                 }, {}, {}, function() -- Done
-                                    exports[Config.TargetName]:RemoveZone('fleeca-safe' .. v.Coords.x)
+                                    TriggerServerEvent('rv_robberies:server:RemoveGlobalTarget', 'fleeca-safe' .. v.Coords.x)
                                     StopAnimTask(PlayerPedId(), "anim@heists@fleeca_bank@drilling", "drill_straight_idle", 1.0)
                                     DetachEntity(DrillObject, true, true)
                                     DeleteObject(DrillObject)
@@ -617,7 +617,7 @@ function UnlockDoor(location)
             }
         })
     end
-    exports[Config.TargetName]:AddBoxZone('fleeca-indoor' .. trim(location.Name), location.LockedDoor.Coords, 0.8, 1.0, {
+    TriggerServerEvent('rv_robberies:server:AddGlobalTarget','fleeca-indoor' .. trim(location.Name), location.LockedDoor.Coords, 0.8, 1.0, {
         name = "fleeca-indoor-" .. trim(location.Name),
         heading = location.LockedDoor.Heading,
         debugPoly = false
@@ -649,7 +649,7 @@ function UnlockDoor(location)
                                 TaskPlayAnim(PlayerPedId(), "amb@prop_human_bum_bin@idle_b", "exit", 4.0, 4.0, -1, 50, 0, false, false, false)
                                 return
                             end
-                            exports[Config.TargetName]:RemoveZone('fleeca-indoor' .. trim(location.Name))
+                            TriggerServerEvent('rv_robberies:server:RemoveGlobalTarget', 'fleeca-indoor' .. trim(location.Name))
                             LoadAnimDict("amb@prop_human_bum_bin@idle_b")
                             TaskPlayAnim(PlayerPedId(), "amb@prop_human_bum_bin@idle_b", "idle_d", 4.0, 4.0, -1, 50, 0, false, false, false)
                             TriggerServerEvent('qb-doorlock:server:updateState', 'banks-' .. location.Name, false, NetworkGetNetworkIdFromEntity(PlayerPedId()), true, true, true, false)
@@ -688,10 +688,6 @@ function CreateTrollys(location)
         PlaceObjectOnGroundProperly(trolly)
     end
 end
-
-RegisterNetEvent('rv_robberies:client:RemoveTarget', function(target)
-    exports[Config.TargetName]:RemoveZone(target)
-end)
 
 function GetTrader(type) 
     for k,v in pairs(Config.FlashdriveTraders.Types) do

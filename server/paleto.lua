@@ -20,7 +20,7 @@ QBCore.Functions.CreateCallback('rv_robberies:server:HasPaletoSkill', function(s
     end
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    Player.Functions.SetMetaData("storesrobbed", Player.PlayerData.metadata['storesrobbedd'] + 1)
+    Player.Functions.SetMetaData("paletosrobbed", Player.PlayerData.metadata['paletosrobbed'] + 1)
     cb(true)
 end)
 

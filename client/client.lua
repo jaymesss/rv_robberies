@@ -26,7 +26,7 @@ Citizen.CreateThread(function()
             TriggerServerEvent('qb-doorlock:server:updateState', 'vangelico-vangelico_doors', true, NetworkGetNetworkIdFromEntity(PlayerPedId()), true, true, true, false)
             VangelicoRobbed = false
             for k,v in pairs(Config.Vangelico.CaseZones) do
-                exports[Config.TargetName]:RemoveZone('vangelico-case-' .. v.x .. '-' .. v.y .. '-' .. v.z)
+                TriggerServerEvent('rv_robberies:server:RemoveGlobalTarget', 'vangelico-case-' .. v.x .. '-' .. v.y .. '-' .. v.z)
             end
         end 
         Citizen.Wait(100)
@@ -59,7 +59,7 @@ RegisterNetEvent('rv_robberies:client:RobSafe', function()
                 TaskPlayAnim(PlayerPedId(), "amb@prop_human_bum_bin@idle_b", "exit", 4.0, 4.0, -1, 50, 0, false, false, false)
                 return
             end
-            exports[Config.TargetName]:RemoveZone('store-safe')
+            TriggerServerEvent('rv_robberies:server:RemoveGlobalTarget', 'store-safe-' .. near.Name)
             LoadAnimDict("amb@prop_human_bum_bin@idle_b")
             TaskPlayAnim(PlayerPedId(), "amb@prop_human_bum_bin@idle_b", "idle_d", 4.0, 4.0, -1, 50, 0, false, false, false)
             QBCore.Functions.Progressbar("emptying_safe", Locale.Info.emptying_safe, math.random(15000, 30000), false, true, {
@@ -73,7 +73,7 @@ RegisterNetEvent('rv_robberies:client:RobSafe', function()
                 TaskPlayAnim(PlayerPedId(), "amb@prop_human_bum_bin@idle_b", "exit", 4.0, 4.0, -1, 50, 0, false, false, false)
                 TriggerServerEvent('rv_robberies:server:EmptiedSafe')
                 QBCore.Functions.Notify(Locale.Success.head_to_the_register, 'success', 5000)
-                exports[Config.TargetName]:AddBoxZone('store-register', near.RegisterTarget.Coords, 0.8, 1.2, {
+                TriggerServerEvent('rv_robberies:server:AddGlobalTarget', 'store-register-' .. near.Name, near.RegisterTarget.Coords, 0.8, 1.2, {
                     name = "store-register",
                     heading = near.RegisterTarget.Heading,
                     debugPoly = false
@@ -95,7 +95,8 @@ RegisterNetEvent('rv_robberies:client:RobSafe', function()
 end)
 
 RegisterNetEvent('rv_robberies:client:RobRegister', function()
-    exports[Config.TargetName]:RemoveZone('store-register')
+    
+    TriggerServerEvent('rv_robberies:server:RemoveGlobalTarget', 'store-register-' .. near.Name)
     LoadAnimDict("amb@prop_human_bum_bin@idle_b")
     TaskPlayAnim(PlayerPedId(), "amb@prop_human_bum_bin@idle_b", "idle_d", 4.0, 4.0, -1, 50, 0, false, false, false)
     QBCore.Functions.Progressbar("safe_picklock", Locale.Info.emptying_register, math.random(6000, 20000), false, true, {
@@ -139,6 +140,14 @@ RegisterNetEvent('rv_robberies:client:Dispatch', function(msg, position)
     })
 end)
 
+RegisterNetEvent('rv_robberies:client:AddGlobalTarget', function(name, coords, sizeX, sizeY, data, options)
+    exports[Config.TargetName]:AddBoxZone(name, coords, sizeX, sizeY, data, options)
+end)
+
+RegisterNetEvent('rv_robberies:client:RemoveGlobalTarget', function(name)
+    exports[Config.TargetName]:RemoveZone(name)
+end)
+
 function RobShopkeeper(targetPed)
     local p = promise.new()
     local cops
@@ -174,8 +183,8 @@ function RobShopkeeper(targetPed)
         Started = false
         TaskPlayAnim(targetPed, "amb@prop_human_bum_bin@idle_b", "exit", 4.0, 4.0, -1, 50, 0, false, false, false)
         QBCore.Functions.Notify(Locale.Success.head_to_the_safe, 'success', 5000)
-        exports[Config.TargetName]:AddBoxZone('store-safe', near.SafeTarget.Coords, 0.8, 1.2, {
-            name = "store-safe",
+        TriggerServerEvent('rv_robberies:server:AddGlobalTarget', 'store-safe-' .. near.Name, near.SafeTarget.Coords, 0.8, 1.2, {
+            name = "store-safe-" .. near.Name,
             heading = near.SafeTarget.Heading,
             debugPoly = false
         }, {

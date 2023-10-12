@@ -79,7 +79,7 @@ RegisterNetEvent('rv_robberies:server:BlowVaultFusebox', function(name)
     table.insert(BlownFuseboxes, name)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    Player.Functions.SetMetaData("storesrobbed", Player.PlayerData.metadata['storesrobbedd'] + 1)
+    Player.Functions.SetMetaData("vaultsrobbed", Player.PlayerData.metadata['vaultsrobbed'] + 1)
     if #BlownFuseboxes >= 3 then
         Blackout = true
         

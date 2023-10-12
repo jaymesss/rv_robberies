@@ -58,7 +58,7 @@ RegisterNetEvent('rv_robberies:client:PacificSecurity', function(location)
             TriggerServerEvent('rv_robberies:server:PacificSecurityHacked')
             QBCore.Functions.Notify(Locale.Info.door_available, 'success', 5000)
             local door = GetDoorById(location, 'Main')
-            exports[Config.TargetName]:AddBoxZone('pacific-door' .. door.Id, door.Coords, 1.1, 1.1, {
+            TriggerServerEvent('rv_robberies:server:AddGlobalTarget', 'pacific-door' .. door.Id, door.Coords, 1.1, 1.1, {
                 name = "pacific-door-" .. door.Id,
                 heading = door.Heading,
                 debugPoly = false
@@ -82,7 +82,7 @@ RegisterNetEvent('rv_robberies:client:PacificSecurity', function(location)
                                     QBCore.Functions.Notify(Locale.Error.failed_thermite, 'error', 5000)
                                     return
                                 end
-                                exports[Config.TargetName]:RemoveZone('pacific-door-' .. door.Id)
+                                TriggerServerEvent('rv_robberies:server:RemoveGlobalTarget', 'pacific-door-' .. door.Id)
                                 TriggerServerEvent('qb-doorlock:server:updateState', 'banks-' .. location.Name .. ' ' .. door.Id, false, NetworkGetNetworkIdFromEntity(PlayerPedId()), true, true, true, false)
                                 AddDrawersTarget(location)
                             end, math.random(4, 7), math.random(10, 15))
@@ -93,7 +93,7 @@ RegisterNetEvent('rv_robberies:client:PacificSecurity', function(location)
                 }
             })
             local door = GetDoorById(location, 'Keys')
-            exports[Config.TargetName]:AddBoxZone('pacific-door' .. door.Id, door.Coords, 1.1, 1.1, {
+            TriggerServerEvent('rv_robberies:server:AddGlobalTarget','pacific-door' .. door.Id, door.Coords, 1.1, 1.1, {
                 name = "pacific-door-" .. door.Id,
                 heading = door.Heading,
                 debugPoly = false
@@ -111,9 +111,9 @@ RegisterNetEvent('rv_robberies:client:PacificSecurity', function(location)
                             if not keys then
                                 return
                             end
-                            exports[Config.TargetName]:RemoveZone('pacific-door-' .. door.Id)
+                            TriggerServerEvent('rv_robberies:server:RemoveGlobalTarget', 'pacific-door-' .. door.Id)
                             TriggerServerEvent('qb-doorlock:server:updateState', 'banks-' .. location.Name .. ' ' .. door.Id, false, NetworkGetNetworkIdFromEntity(PlayerPedId()), true, true, true, false)
-                            exports[Config.TargetName]:AddBoxZone('pacific-system', location.DisableSystems.Coords, 1.1, 1.1, {
+                            TriggerServerEvent('rv_robberies:server:AddGlobalTarget','pacific-system', location.DisableSystems.Coords, 1.1, 1.1, {
                                 name = "pacific-system",
                                 heading = location.DisableSystems.Heading,
                                 debugPoly = false
@@ -124,7 +124,7 @@ RegisterNetEvent('rv_robberies:client:PacificSecurity', function(location)
                                         action = function()
                                             exports["memorygame"]:thermiteminigame(10, 3, 3, 10,
                                             function()
-                                                exports[Config.TargetName]:RemoveZone('pacific-system')
+                                                TriggerServerEvent('rv_robberies:server:RemoveGlobalTarget', 'pacific-system')
                                                 QBCore.Functions.Notify(Locale.Success.disabled_systems)
                                                 AddLowerBankDoor(location)
                                                 TriggerServerEvent('rv_robberies:server:GivePacificKeycard')
@@ -153,7 +153,7 @@ end)
 
 function AddLowerBankDoor(location)
     local door = GetDoorById(location, 'Lower Bank')
-    exports[Config.TargetName]:AddBoxZone('pacific-door' .. door.Id, door.Coords, 1.1, 1.1, {
+    TriggerServerEvent('rv_robberies:server:AddGlobalTarget','pacific-door' .. door.Id, door.Coords, 1.1, 1.1, {
         name = "pacific-door-" .. door.Id,
         heading = door.Heading,
         debugPoly = false
@@ -171,7 +171,7 @@ function AddLowerBankDoor(location)
                     if not keys then
                         return
                     end
-                    exports[Config.TargetName]:RemoveZone('pacific-door-' .. door.Id)
+                    TriggerServerEvent('rv_robberies:server:RemoveGlobalTarget', 'pacific-door-' .. door.Id)
                     TriggerServerEvent('qb-doorlock:server:updateState', 'banks-' .. location.Name .. ' ' .. door.Id, false, NetworkGetNetworkIdFromEntity(PlayerPedId()), true, true, true, false)
                     AddLaptopTarget(location)
                 end,
@@ -183,7 +183,7 @@ function AddLowerBankDoor(location)
 end
 
 function AddLaptopTarget(location)
-    exports[Config.TargetName]:AddBoxZone('pacific-keypad', location.Keypad.Coords, 1.5, 1.6, {
+    TriggerServerEvent('rv_robberies:server:AddGlobalTarget','pacific-keypad', location.Keypad.Coords, 1.5, 1.6, {
         name = "pacific-keypad",
         heading = location.Keypad.Heading,
         debugPoly = false
@@ -277,7 +277,7 @@ end
 
 function AddDrawersTarget(location)
     for k,v in pairs(location.Drawers) do
-        exports[Config.TargetName]:AddBoxZone('pacific-drawers' .. v.Coords.x, v.Coords, 1.1, 1.1, {
+        TriggerServerEvent('rv_robberies:server:AddGlobalTarget','pacific-drawers' .. v.Coords.x, v.Coords, 1.1, 1.1, {
             name = "pacific-drawers-" .. v.Coords.x,
             heading = v.Heading,
             debugPoly = false
@@ -318,7 +318,7 @@ function UnlockPacificDoor(location)
     FreezeEntityPosition(door, true)
     CreateTrollys(location)
     for k,v in pairs(location.Trollys) do
-        exports[Config.TargetName]:AddBoxZone('pacific-trolly' .. v.x, v, 1.1, 1.1, {
+        TriggerServerEvent('rv_robberies:server:AddGlobalTarget','pacific-trolly' .. v.x, v, 1.1, 1.1, {
             name = "pacific-trolly-" .. v.x,
             heading = v.w,
             debugPoly = false
@@ -328,7 +328,7 @@ function UnlockPacificDoor(location)
                     type = "client",
                     action = function()
                         local ped = PlayerPedId()
-                        exports[Config.TargetName]:RemoveZone('pacific-trolly' .. v.x)
+                        TriggerServerEvent('rv_robberies:server:RemoveGlobalTarget', 'pacific-trolly' .. v.x)
                         QBCore.Functions.Progressbar("looting_trolly", Locale.Info.looting_trolly, 40000, false, true, {
                             disableMovement = true,
                             disableCarMovement = true,
@@ -391,7 +391,7 @@ function UnlockPacificDoor(location)
         })
     end
     for k,v in pairs(location.Safes) do
-        exports[Config.TargetName]:AddBoxZone('pacific-safe' .. v.Coords.x, v.Coords, 1.1, 1.1, {
+        TriggerServerEvent('rv_robberies:server:AddGlobalTarget','pacific-safe' .. v.Coords.x, v.Coords, 1.1, 1.1, {
             name = "pacific-safe-" .. v.Coords.x,
             heading = v.Heading,
             debugPoly = false
@@ -444,7 +444,7 @@ function UnlockPacificDoor(location)
                                     disableCombat = true
                                 }, {
                                 }, {}, {}, function() -- Done
-                                    exports[Config.TargetName]:RemoveZone('paleto-safe' .. v.Coords.x)
+                                    TriggerServerEvent('rv_robberies:server:RemoveGlobalTarget', 'paleto-safe' .. v.Coords.x)
                                     StopAnimTask(PlayerPedId(), "anim@heists@fleeca_bank@drilling", "drill_straight_idle", 1.0)
                                     DetachEntity(DrillObject, true, true)
                                     DeleteObject(DrillObject)
@@ -464,7 +464,7 @@ function UnlockPacificDoor(location)
         })
     end
     local door = GetDoorById(location, 'Vault 1')
-    exports[Config.TargetName]:AddBoxZone('pacific-indoor' .. door.Id, door.Coords, 1.2, 1.2, {
+    TriggerServerEvent('rv_robberies:server:AddGlobalTarget','pacific-indoor' .. door.Id, door.Coords, 1.2, 1.2, {
         name = "paleto-indoor-" .. door.Id,
         heading = door.Heading,
         debugPoly = false
@@ -496,7 +496,7 @@ function UnlockPacificDoor(location)
                                 TaskPlayAnim(PlayerPedId(), "amb@prop_human_bum_bin@idle_b", "exit", 4.0, 4.0, -1, 50, 0, false, false, false)
                                 return
                             end
-                            exports[Config.TargetName]:RemoveZone('pacific-indoor' .. door.Id)
+                            TriggerServerEvent('rv_robberies:server:RemoveGlobalTarget', 'pacific-indoor' .. door.Id)
                             LoadAnimDict("amb@prop_human_bum_bin@idle_b")
                             TaskPlayAnim(PlayerPedId(), "amb@prop_human_bum_bin@idle_b", "idle_d", 4.0, 4.0, -1, 50, 0, false, false, false)
                             TriggerServerEvent('qb-doorlock:server:updateState', 'banks-' .. location.Name .. ' ' .. door.Id, false, NetworkGetNetworkIdFromEntity(PlayerPedId()), true, true, true, false)
@@ -510,7 +510,7 @@ function UnlockPacificDoor(location)
         }
     })
     local door = GetDoorById(location, 'Vault 2')
-    exports[Config.TargetName]:AddBoxZone('pacific-indoor' .. door.Id, door.Coords, 1.2, 1.2, {
+    TriggerServerEvent('rv_robberies:server:AddGlobalTarget','pacific-indoor' .. door.Id, door.Coords, 1.2, 1.2, {
         name = "paleto-indoor-" .. door.Id,
         heading = door.Heading,
         debugPoly = false
@@ -542,7 +542,7 @@ function UnlockPacificDoor(location)
                                 TaskPlayAnim(PlayerPedId(), "amb@prop_human_bum_bin@idle_b", "exit", 4.0, 4.0, -1, 50, 0, false, false, false)
                                 return
                             end
-                            exports[Config.TargetName]:RemoveZone('pacific-indoor' .. door.Id)
+                            TriggerServerEvent('rv_robberies:server:RemoveGlobalTarget', 'pacific-indoor' .. door.Id)
                             LoadAnimDict("amb@prop_human_bum_bin@idle_b")
                             TaskPlayAnim(PlayerPedId(), "amb@prop_human_bum_bin@idle_b", "idle_d", 4.0, 4.0, -1, 50, 0, false, false, false)
                             TriggerServerEvent('qb-doorlock:server:updateState', 'banks-' .. location.Name .. ' ' .. door.Id, false, NetworkGetNetworkIdFromEntity(PlayerPedId()), true, true, true, false)

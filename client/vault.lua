@@ -135,7 +135,7 @@ RegisterNetEvent('rv_robberies:client:BlowVaultFusebox', function(location)
                 QBCore.Functions.Notify(Locale.Error.failed_thermite, 'error', 5000)
                 return
             end
-            exports[Config.TargetName]:RemoveZone('vault-fusebox' .. location.Name)
+            TriggerServerEvent('rv_robberies:server:RemoveGlobalTarget','vault-fusebox' .. location.Name)
             TriggerServerEvent('rv_robberies:server:BlowVaultFusebox', location.Name)
             QBCore.Functions.Notify(Locale.Info.vault_fusebox_blown, 'success', 5000)
         end, math.random(4, 7), math.random(5, 10))
@@ -202,7 +202,7 @@ end
 function OnInside(location)
     CreateTrollys(location)
     for k,v in pairs(location.Trollys) do
-        exports[Config.TargetName]:AddBoxZone('pacific-trolly' .. v.x, v, 1.1, 1.1, {
+        TriggerServerEvent('rv_robberies:server:AddGlobalTarget', 'pacific-trolly' .. v.x, v, 1.1, 1.1, {
             name = "pacific-trolly-" .. v.x,
             heading = v.w,
             debugPoly = false
@@ -212,7 +212,7 @@ function OnInside(location)
                     type = "client",
                     action = function()
                         local ped = PlayerPedId()
-                        exports[Config.TargetName]:RemoveZone('pacific-trolly' .. v.x)
+                        TriggerServerEvent('rv_robberies:server:RemoveGlobalTarget','pacific-trolly' .. v.x)
                         QBCore.Functions.Progressbar("looting_trolly", Locale.Info.looting_trolly, 40000, false, true, {
                             disableMovement = true,
                             disableCarMovement = true,
@@ -276,7 +276,7 @@ function OnInside(location)
     end
     for k,v in pairs(location.Doors) do
         if v.Id ~= 'Main' and v.Id ~= 'First' then
-            exports[Config.TargetName]:AddBoxZone('vault-indoor' .. v.Id, v.Coords, 1.2, 1.2, {
+            TriggerServerEvent('rv_robberies:server:AddGlobalTarget', 'vault-indoor' .. v.Id, v.Coords, 1.2, 1.2, {
                 name = "vault-indoor-" .. v.Id,
                 heading = v.Heading,
                 debugPoly = false
@@ -308,7 +308,7 @@ function OnInside(location)
                                         TaskPlayAnim(PlayerPedId(), "amb@prop_human_bum_bin@idle_b", "exit", 4.0, 4.0, -1, 50, 0, false, false, false)
                                         return
                                     end
-                                    exports[Config.TargetName]:RemoveZone('vault-indoor' .. v.Id)
+                                    TriggerServerEvent('rv_robberies:server:RemoveGlobalTarget','vault-indoor' .. v.Id)
                                     LoadAnimDict("amb@prop_human_bum_bin@idle_b")
                                     TaskPlayAnim(PlayerPedId(), "amb@prop_human_bum_bin@idle_b", "exit", 4.0, 4.0, -1, 50, 0, false, false, false)
                                     local door = GetClosestObjectOfType(v.Coords, 3.0, v.Model)
@@ -330,7 +330,7 @@ end
 function UnlockVaultFirstDoor(location)
     TriggerServerEvent('qb-doorlock:server:updateState', 'banks-' .. location.Name .. ' ' .. 'First', false, NetworkGetNetworkIdFromEntity(PlayerPedId()), true, true, true, false)
     for k,v in pairs(location.Lockers) do
-        exports[Config.TargetName]:AddBoxZone('vault-locker' .. v.Coords.x, v.Coords, 1.1, 1.1, {
+        TriggerServerEvent('rv_robberies:server:AddGlobalTarget', 'vault-locker' .. v.Coords.x, v.Coords, 1.1, 1.1, {
             name = "vault-locker-" .. v.Coords.x,
             heading = v.Heading,
             debugPoly = false
@@ -363,7 +363,7 @@ function UnlockVaultFirstDoor(location)
         })
     end
     local door = GetDoorById(location, 'Main')
-    exports[Config.TargetName]:AddBoxZone('vault-main-door', door.Coords, 1.1, 1.1, {
+    TriggerServerEvent('rv_robberies:server:AddGlobalTarget', 'vault-main-door', door.Coords, 1.1, 1.1, {
         name = "vault-main-door",
         heading = door.Heading,
         debugPoly = false
@@ -381,7 +381,7 @@ function UnlockVaultFirstDoor(location)
                     if not keycard then
                         return
                     end
-                    exports[Config.TargetName]:RemoveZone('vault-main-door')
+                    TriggerServerEvent('rv_robberies:server:RemoveGlobalTarget','vault-main-door')
                     
                     local door = GetClosestObjectOfType(location.VaultDoor.Coords, 3.0, location.VaultDoor.Model)
                     FreezeEntityPosition(door, false)
@@ -394,7 +394,7 @@ function UnlockVaultFirstDoor(location)
             }
         }
     })
-    exports[Config.TargetName]:AddBoxZone('vault-computer', location.Computer.Coords, 1.1, 1.1, {
+    TriggerServerEvent('rv_robberies:server:AddGlobalTarget', 'vault-computer', location.Computer.Coords, 1.1, 1.1, {
         name = "vault-computer",
         heading = location.Computer.Heading,
         debugPoly = false
@@ -426,7 +426,7 @@ function UnlockVaultFirstDoor(location)
                         StopAnimTask(PlayerPedId(), "anim@gangops@facility@servers@", "hotwire", 1.0)
                         exports["memorygame"]:thermiteminigame(10, 3, 3, 10,
                         function()
-                            exports[Config.TargetName]:RemoveZone('vault-computer')
+                            TriggerServerEvent('rv_robberies:server:RemoveGlobalTarget','vault-computer')
                             QBCore.Functions.Notify(Locale.Success.disabled_systems, 'success', 5000)
                             TriggerServerEvent('rv_robberies:server:TakeUSB')
                             TriggerServerEvent('rv_robberies:server:GiveVaultKeycard')

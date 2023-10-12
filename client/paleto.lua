@@ -86,7 +86,7 @@ Citizen.CreateThread(function()
                             function()
                                 TriggerServerEvent('rv_robberies:server:PaletoFuseboxBlown')
                                 QBCore.Functions.Notify(Locale.Success.fusebox_blown)
-                                exports[Config.TargetName]:AddBoxZone('paleto-keypad' .. trim(v.Name), v.Keypad.Coords, 1.5, 1.6, {
+                                TriggerServerEvent('rv_robberies:server:AddGlobalTarget','paleto-keypad' .. trim(v.Name), v.Keypad.Coords, 1.5, 1.6, {
                                     name = "paleto-keypad-" .. trim(v.Name),
                                     heading = v.Keypad.Heading,
                                     debugPoly = false
@@ -361,7 +361,7 @@ end
 function UnlockPaletoDoor(location)
     CreateTrollys(location)
     for k,v in pairs(location.Trollys) do
-        exports[Config.TargetName]:AddBoxZone('paleto-trolly' .. v.x, v, 1.1, 1.1, {
+        TriggerServerEvent('rv_robberies:server:AddGlobalTarget','paleto-trolly' .. v.x, v, 1.1, 1.1, {
             name = "paleto-trolly-" .. v.x,
             heading = v.w,
             debugPoly = false
@@ -371,7 +371,7 @@ function UnlockPaletoDoor(location)
                     type = "client",
                     action = function()
                         local ped = PlayerPedId()
-                        exports[Config.TargetName]:RemoveZone('paleto-trolly' .. v.x)
+                        TriggerServerEvent('rv_robberies:server:RemoveGlobalTarget', 'paleto-trolly' .. v.x)
                         QBCore.Functions.Progressbar("looting_trolly", Locale.Info.looting_trolly, 40000, false, true, {
                             disableMovement = true,
                             disableCarMovement = true,
@@ -434,7 +434,7 @@ function UnlockPaletoDoor(location)
         })
     end
     for k,v in pairs(location.Safes) do
-        exports[Config.TargetName]:AddBoxZone('paleto-safe' .. v.Coords.x, v.Coords, 1.1, 1.1, {
+        TriggerServerEvent('rv_robberies:server:AddGlobalTarget','paleto-safe' .. v.Coords.x, v.Coords, 1.1, 1.1, {
             name = "paleto-safe-" .. v.Coords.x,
             heading = v.Heading,
             debugPoly = false
@@ -487,7 +487,7 @@ function UnlockPaletoDoor(location)
                                     disableCombat = true
                                 }, {
                                 }, {}, {}, function() -- Done
-                                    exports[Config.TargetName]:RemoveZone('paleto-safe' .. v.Coords.x)
+                                    TriggerServerEvent('rv_robberies:server:RemoveGlobalTarget', 'paleto-safe' .. v.Coords.x)
                                     StopAnimTask(PlayerPedId(), "anim@heists@fleeca_bank@drilling", "drill_straight_idle", 1.0)
                                     DetachEntity(DrillObject, true, true)
                                     DeleteObject(DrillObject)
@@ -506,7 +506,7 @@ function UnlockPaletoDoor(location)
             }
         })
     end
-    exports[Config.TargetName]:AddBoxZone('paleto-indoor' .. trim(location.Name), location.LockedDoor.Coords, 1.2, 1.2, {
+    TriggerServerEvent('rv_robberies:server:AddGlobalTarget','paleto-indoor' .. trim(location.Name), location.LockedDoor.Coords, 1.2, 1.2, {
         name = "paleto-indoor-" .. trim(location.Name),
         heading = location.LockedDoor.Heading,
         debugPoly = false
@@ -538,7 +538,7 @@ function UnlockPaletoDoor(location)
                                 TaskPlayAnim(PlayerPedId(), "amb@prop_human_bum_bin@idle_b", "exit", 4.0, 4.0, -1, 50, 0, false, false, false)
                                 return
                             end
-                            exports[Config.TargetName]:RemoveZone('fleeca-indoor' .. trim(location.Name))
+                            TriggerServerEvent('rv_robberies:server:RemoveGlobalTarget', 'fleeca-indoor' .. trim(location.Name))
                             LoadAnimDict("amb@prop_human_bum_bin@idle_b")
                             TaskPlayAnim(PlayerPedId(), "amb@prop_human_bum_bin@idle_b", "idle_d", 4.0, 4.0, -1, 50, 0, false, false, false)
                             TriggerServerEvent('qb-doorlock:server:updateState', 'banks-' .. location.Name .. ' In', false, NetworkGetNetworkIdFromEntity(PlayerPedId()), true, true, true, false)
